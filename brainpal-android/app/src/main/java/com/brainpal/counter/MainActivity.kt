@@ -4,8 +4,8 @@ import android.content.Intent
 import android.provider.Settings
 import android.os.Bundle
 import android.widget.Button
-import android.widget.Switch
 import android.widget.TextView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
         }
         findViewById<Button>(R.id.reset).setOnClickListener { store.resetToday(); render() }
-        findViewById<Switch>(R.id.notchSwitch).apply {
+        findViewById<SwitchCompat>(R.id.notchSwitch).apply {
             isChecked = store.notchEnabled
             setOnCheckedChangeListener { _, on -> store.notchEnabled = on }
         }

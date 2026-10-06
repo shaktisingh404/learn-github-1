@@ -23,28 +23,35 @@ class ReelCounterService : AccessibilityService() {
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
-        val source = when (event.packageName?.toString()) {
+        val pkg = event.packageName?.toString()
+        val source = when (pkg) {
             IG -> Source.INSTAGRAM
             YT -> Source.YOUTUBE
-            else -> return
-        }
-        val root = rootInActiveWindow
-        val inFeed = root != null && isReelScreen(root, source)
-        if (!inFeed) {
-            if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) overlay.hide()
-            root?.recycle()
-            return
-        }
-        refreshOverlay()
-        if (event.eventType == AccessibilityEvent.TYPE_VIEW_SCROLLED) {
-            val now = System.currentTimeMillis()
-            if (now - lastCountAt > DEBOUNCE_MS) {
-                lastCountAt = now
-                store.increment(source)
-                refreshOverlay()
+            else -> {
+                // Another app/launcher took the foreground: drop the pill.
+                if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED &&
+                    pkg != packageName && pkg != "com.android.systemui"
+                ) overlay.hide()
+                return
             }
         }
-        root.recycle()
+        val root = rootInActiveWindow ?: return
+        try {
+            if (!isReelScreen(root, source)) {
+                overlay.hide()
+                return
+            }
+            if (event.eventType == AccessibilityEvent.TYPE_VIEW_SCROLLED) {
+                val now = System.currentTimeMillis()
+                if (now - lastCountAt > DEBOUNCE_MS) {
+                    lastCountAt = now
+                    store.increment(source)
+                }
+            }
+            refreshOverlay()
+        } finally {
+            root.recycle()
+        }
     }
 
     private fun isReelScreen(root: AccessibilityNodeInfo, source: Source): Boolean {

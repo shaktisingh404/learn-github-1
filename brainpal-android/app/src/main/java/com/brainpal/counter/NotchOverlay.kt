@@ -17,8 +17,8 @@ import android.widget.TextView
  */
 class NotchOverlay(private val context: Context) {
     private val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-    private val left = label()
-    private val right = label()
+    private val leftLabel = label()
+    private val rightLabel = label()
     private val gap = View(context)
     private var root: LinearLayout? = null
 
@@ -54,9 +54,9 @@ class NotchOverlay(private val context: Context) {
                 setColor(Color.BLACK)
                 cornerRadius = cutH / 2f
             }
-            addView(left)
+            addView(leftLabel)
             addView(gap)
-            addView(right)
+            addView(rightLabel)
         }
         val lp = WindowManager.LayoutParams(
             WindowManager.LayoutParams.WRAP_CONTENT,
@@ -76,8 +76,8 @@ class NotchOverlay(private val context: Context) {
     }
 
     fun update(ig: Int, yt: Int) {
-        left.text = "▶ $ig"
-        right.text = "▷ $yt"
+        leftLabel.text = "▶ $ig"
+        rightLabel.text = "▷ $yt"
     }
 
     fun hide() {
