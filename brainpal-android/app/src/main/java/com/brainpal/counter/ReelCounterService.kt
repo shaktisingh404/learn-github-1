@@ -1,6 +1,7 @@
 package com.brainpal.counter
 
 import android.accessibilityservice.AccessibilityService
+import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 
@@ -22,7 +23,16 @@ class ReelCounterService : AccessibilityService() {
         instance = this
     }
 
+    // An uncaught exception here makes Android switch the service off, so never let one escape.
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
+        try {
+            handleEvent(event)
+        } catch (t: Throwable) {
+            Log.e("BrainPal", "event failed", t)
+        }
+    }
+
+    private fun handleEvent(event: AccessibilityEvent) {
         val pkg = event.packageName?.toString()
         val source = when (pkg) {
             IG -> Source.INSTAGRAM

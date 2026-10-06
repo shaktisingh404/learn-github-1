@@ -17,9 +17,8 @@ import android.widget.TextView
  */
 class NotchOverlay(private val context: Context) {
     private val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-    private val leftLabel = label()
-    private val rightLabel = label()
-    private val gap = View(context)
+    private var leftLabel: TextView? = null
+    private var rightLabel: TextView? = null
     private var root: LinearLayout? = null
 
     private fun dp(v: Int) = (v * context.resources.displayMetrics.density).toInt()
@@ -46,7 +45,12 @@ class NotchOverlay(private val context: Context) {
         update(ig, yt)
         if (root != null) return
         val (cutW, cutH) = cutoutSize()
-        gap.layoutParams = LinearLayout.LayoutParams(cutW, 1)
+        // Fresh views each time: a view removed from the window still keeps its parent.
+        val l = label()
+        val r = label()
+        val gap = View(context).apply { layoutParams = LinearLayout.LayoutParams(cutW, 1) }
+        leftLabel = l
+        rightLabel = r
         val pill = LinearLayout(context).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
@@ -54,9 +58,9 @@ class NotchOverlay(private val context: Context) {
                 setColor(Color.BLACK)
                 cornerRadius = cutH / 2f
             }
-            addView(leftLabel)
+            addView(l)
             addView(gap)
-            addView(rightLabel)
+            addView(r)
         }
         val lp = WindowManager.LayoutParams(
             WindowManager.LayoutParams.WRAP_CONTENT,
@@ -73,15 +77,18 @@ class NotchOverlay(private val context: Context) {
         }
         wm.addView(pill, lp)
         root = pill
+        update(ig, yt)
     }
 
     fun update(ig: Int, yt: Int) {
-        leftLabel.text = "▶ $ig"
-        rightLabel.text = "▷ $yt"
+        leftLabel?.text = "▶ $ig"
+        rightLabel?.text = "▷ $yt"
     }
 
     fun hide() {
         root?.let { runCatching { wm.removeView(it) } }
         root = null
+        leftLabel = null
+        rightLabel = null
     }
 }
