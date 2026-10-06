@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:padding="24dp">
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="BrainPal Counter" android:textSize="26sp" android:textStyle="bold" />
+    <TextView android:id="@+id/status" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:layout_marginTop="4dp" />
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginTop="28dp" android:text="Today" android:textSize="14sp" />
+    <TextView android:id="@+id/igCount" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:textSize="40sp" android:textStyle="bold" />
+    <TextView android:id="@+id/ytCount" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:textSize="40sp" android:textStyle="bold" />
+    <TextView android:id="@+id/total" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:layout_marginTop="8dp" android:textSize="16sp" />
+
+    <Button android:id="@+id/enable" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:layout_marginTop="28dp"
+        android:text="Enable counting (Accessibility)" />
+    <Button android:id="@+id/reset" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:text="Reset today" />
+    <Switch android:id="@+id/notchSwitch" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:layout_marginTop="12dp"
+        android:text="Show live count at the notch" />
+</LinearLayout>

@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">BrainPal Counter</string>
+    <string name="service_description">Counts Instagram Reels and YouTube Shorts you scroll and shows the live count around your phone\'s notch. Nothing leaves your device.</string>
+</resources>
