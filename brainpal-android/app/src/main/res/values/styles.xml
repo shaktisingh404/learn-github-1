@@ -1,0 +1,6 @@
+<resources>
+    <style name="Theme.BrainPal" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">#6C5CE7</item>
+        <item name="colorAccent">#6C5CE7</item>
+    </style>
+</resources>
